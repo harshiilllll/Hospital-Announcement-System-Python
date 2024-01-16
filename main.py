@@ -4,16 +4,21 @@ from functools import partial
 from gtts import gTTS
 import os
 
-def announce_code(code, department_var, floor_var):
+def announce_code(code, department_var, floor_var, is_deactivated_var):
     department = department_var.get()
     floor = floor_var.get()
+    is_deactivated = is_deactivated_var.get()
 
     # Check if both department and floor are selected
     if not department or not floor:
         show_error("Please select both department and floor.")
         return
 
-    message = f"Attention please, code {code}, {department} department, {floor} Floor."
+    message = f"Attention please, code {code}, {department} department, {floor} Floor"
+
+    # Append "Is Deactivated" if the checkbox is checked
+    if is_deactivated:
+        message += " Is Deactivated"
 
     tts = gTTS(text=message, lang='en', slow=False)
     tts.save("announcement.mp3")
@@ -26,7 +31,7 @@ def show_error(message):
 # GUI setup
 root = tk.Tk()
 root.title("Hospital Announcement System")
-root.geometry("500x500")
+root.geometry("500x550")
 
 # Department dropdown
 departments = ["Cardiology", "Emergency", "Orthopedics", "Radiology", "Surgery", "Other"]
@@ -46,6 +51,11 @@ floor_var = tk.StringVar()
 floor_dropdown = ttk.Combobox(root, textvariable=floor_var, values=floors, font=("Arial", 12), width=20)
 floor_dropdown.pack(pady=5)
 
+# Is Deactivated checkbox
+is_deactivated_var = tk.BooleanVar()
+is_deactivated_checkbox = tk.Checkbutton(root, text="Is Deactivated?", variable=is_deactivated_var, font=("Arial", 14))
+is_deactivated_checkbox.pack(pady=5)
+
 # Error label
 error_label = tk.Label(root, text="", font=("Arial", 12), fg="red")
 error_label.pack(pady=5)
@@ -53,7 +63,7 @@ error_label.pack(pady=5)
 # Code buttons
 codes = ["Blue", "Red", "Violet", "Orange"]
 for code in codes:
-    button = tk.Button(root, text=f"Code {code}", command=partial(announce_code, code, department_var, floor_var),
+    button = tk.Button(root, text=f"Code {code}", command=partial(announce_code, code, department_var, floor_var, is_deactivated_var),
                        font=("Arial", 14), width=20, height=2)
 
     # Set button colors according to codes
