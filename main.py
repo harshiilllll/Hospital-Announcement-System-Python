@@ -31,7 +31,7 @@ def show_error(message):
 # GUI setup
 root = tk.Tk()
 root.title("Hospital Announcement System")
-root.geometry("500x550")
+root.geometry("400x650")
 
 # Department dropdown
 departments = ["Cardiology", "Emergency", "Orthopedics", "Radiology", "Surgery", "Other"]
@@ -61,7 +61,7 @@ error_label = tk.Label(root, text="", font=("Arial", 12), fg="red")
 error_label.pack(pady=5)
 
 # Code buttons
-codes = ["Blue", "Red", "Violet", "Orange"]
+codes = ["Blue", "Violet", "Orange", "Red", "Black"]
 for code in codes:
     button = tk.Button(root, text=f"Code {code}", command=partial(announce_code, code, department_var, floor_var, is_deactivated_var),
                        font=("Arial", 14), width=20, height=2)
@@ -75,6 +75,8 @@ for code in codes:
         button.configure(bg="purple", fg="white")
     elif code == "Orange":
         button.configure(bg="orange", fg="white")
+    elif code == "Black":
+        button.configure(bg="black", fg="white")
 
     button.pack(pady=10)
 
